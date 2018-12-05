@@ -1595,7 +1595,10 @@ long USRP_UHD_i::usrpReceive(size_t tuner_id, double timeout){
         case uhd::rx_metadata_t::ERROR_CODE_NONE:
             break;
         case uhd::rx_metadata_t::ERROR_CODE_TIMEOUT:
-            LOG_WARN(USRP_UHD_i,"WARNING: TIMEOUT OCCURED ON USRP RECEIVE! (received num_samps=" << num_samps << ")");
+            LOG_WARN(USRP_UHD_i,"WARNING: TIMEOUT OCCURED ON USRP RECEIVE! (received num_samps=" << num_samps << " try disable/enable)");
+            usrpDisable(tuner_id);
+            usleep(1000);
+            usrpEnable(tuner_id);
             return 0;
         case uhd::rx_metadata_t::ERROR_CODE_OVERFLOW:
             LOG_WARN(USRP_UHD_i,"WARNING: USRP OVERFLOW DETECTED!");
